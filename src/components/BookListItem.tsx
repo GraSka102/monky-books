@@ -1,14 +1,16 @@
 import React from 'react'
 import Book from '../types/Book'
 
-
 interface Props {
     book: Book,
+    showDetails: (book: Book) => void
 }
 
 export default function BookListItem(props: Props) {
+
+
     return (
-        <div className="item" >
+        <div onClick={() => { props.showDetails(props.book) }} className="item" >
             {props.book.thumbnails.map((thumbnail, index) =>
                 <img key={index} className="ui tiny image" alt={thumbnail.title} src={thumbnail.url} />
             )}
