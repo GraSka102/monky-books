@@ -2,6 +2,7 @@ import React, { ReactElement, useState } from 'react';
 import Book from '../types/Book';
 import BookDetails from './BookDetails';
 import BookList from './BookList';
+import axios from 'axios';
 
 type ViewState = 'list' | 'details'
 
@@ -9,6 +10,7 @@ export default function App(): ReactElement {
 
   const [viewState, setViewState] = useState<ViewState>('list');
   const [book, setBook] = useState<Book>();
+
 
   const showDetails = (book: Book) => {
     setBook(book);
@@ -27,7 +29,7 @@ export default function App(): ReactElement {
         ?
         <BookDetails book={book} showList={showList} />
         :
-        <BookList showDetails={showDetails} />
+        <BookList showDetails={showDetails} showList={showList} />
       }
     </div>
   );
