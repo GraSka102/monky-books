@@ -1,1 +1,0 @@
-export const baseUrl = 'https://api3.angular-buch.com';

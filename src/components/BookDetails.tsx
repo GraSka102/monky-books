@@ -2,62 +2,21 @@ import React, { useEffect, useState } from 'react'
 //import { books } from '../shared/books'
 import Book from '../types/Book'
 
-import { baseUrl } from '../shared/util'
-import axios, { AxiosError, AxiosResponse } from 'axios';
-import AxiosRequestConfig from 'axios'
-
+import { bookApi, UseBookApi } from '../shared/BookApi';
+import { object } from 'superstruct';
 
 interface Props {
     book: Book;
     showList: () => void;
 }
 
-
 export default function BookDetails(props: Props) {
-    //const book = props.book;
-
-    //const url = `${baseUrl}/books/${props.book.isbn}`
-    const [book, setBook] = useState<Book>()
-    const [url] = useState<string>(`${baseUrl}/books/${props.book.isbn}`)
-    const [deleteCurrentBook, setDeleteCurrentBook] = useState(false)
-
-    useEffect(() => {
-        //    httpRequest(url, 'get')
-        axios({
-            method: 'get',
-            url: url
-        })
-            .then((response: AxiosResponse<Book>) => setBook(response.data))
-            .catch((error) => console.log('Error', error.message))
-            .then(() => console.log("Request succeeded"))
-    }, [])
-
-
-    /*  const httpRequest = (url: string, httpMethod?: any) => {
-         axios({
-             method: httpMethod,
-             url: url
-         })
-             .then((response: AxiosResponse<Book>) => setBook(response.data))
-             .catch((error) => console.log('Error', error.message))
-             .then(() => console.log("Request succeeded"))
-     } */
+    const { state } = (UseBookApi<Book>('get', `books/${props.book.isbn}`))
+    const book = state;
 
     const onDeleteBook = () => {
         console.log("Lösche Buch")
-        axios({
-            method: 'delete',
-            url: url
-        })
-            .then((response: AxiosResponse) => {
-                console.log("Buch gelöscht")
-                props.showList();
-            })
-            .catch((error) => console.log('Error', error.message))
-            .then(() => console.log("Delete-Request erfolgreich"))
-
-        console.log("End Lösche Buch")
-
+        bookApi('delete', `books/${props.book.isbn}`, props.showList);
     }
 
     if (!book) {

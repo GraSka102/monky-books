@@ -8,7 +8,6 @@ interface Props {
 
 export default function BookListItem(props: Props) {
 
-
     return (
         <div onClick={() => { props.showDetails(props.book) }} className="item" >
             {props.book.thumbnails.map((thumbnail, index) =>

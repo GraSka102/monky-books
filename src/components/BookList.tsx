@@ -1,9 +1,10 @@
 import axios, { AxiosError, AxiosResponse } from 'axios'
 import React, { useEffect, useState } from 'react'
-//import { books } from '../shared/books'
+import { bookApi, UseBookApi } from '../shared/BookApi';
 import Book from '../types/Book'
 import BookListItem from './BookListItem'
-import { baseUrl } from '../shared/util'
+
+const baseUrl = 'https://api3.angular-buch.com';
 
 interface Props {
     showDetails: (book: Book) => void
@@ -11,57 +12,13 @@ interface Props {
 }
 
 export default function BookList({ showDetails, showList }: Props) {
+    const { state, setState } = (UseBookApi<Book[]>('get', 'books'))
+    const books = state;
+    const setBooks = setState;
 
-    const [books, setBooks] = useState<Book[]>();
-
-    useEffect(() => {
-        axios.get(`${baseUrl}/books`)
-            .then((response: AxiosResponse<Book[]>) => {
-                if (response.data) {
-                    console.log("Bücher sind da" + typeof (response.data))
-                    setBooks(response.data)
-                }
-                else {
-                    console.log("Keine Bücher mehr");
-                }
-            }
-            )
-            .catch((error: AxiosError) => console.log('Error', error.message))
-            .then(() => console.log("Request succeeded"))
-
-    }, [])
-
-    const restoreBooks = () => {
-        axios.delete(`${baseUrl}/books`)
-            .then((response: AxiosResponse<Book[]>) => {
-                if (response.data) {
-                    axios.get(`${baseUrl}/books`)
-                        .then((response: AxiosResponse<Book[]>) => {
-                            if (response.data) {
-                                console.log("Bücher sind da" + typeof (response.data))
-                                setBooks(response.data)
-                            }
-                            else {
-                                console.log("Keine Bücher mehr");
-                            }
-                        }
-                        )
-                        .catch((error: AxiosError) => console.log('Error', error.message))
-                        .then(() => console.log("Request succeeded"))
-
-                    console.log("Gelöscht Bücher sind da" + typeof (response.data))
-
-                }
-                else {
-                    console.log("Keine Bücher mehr");
-                }
-            }
-            )
-            .catch((error: AxiosError) => console.log('Error', error.message))
-            .then(() => {
-                console.log("Request succeeded")
-                showList();
-            })
+    function restoreBooks() {
+        //callback in callback
+        bookApi<string>('delete', `books`, () => bookApi<Book[]>('get', `books`, setBooks));
     }
 
     if (!books) {
@@ -84,7 +41,7 @@ export default function BookList({ showDetails, showList }: Props) {
 
         <div className="ui middle aligned selection divided list">
             {
-                books.map((book) =>
+                books.map((book: Book) =>
                     <BookListItem key={book.isbn} book={book} showDetails={showDetails} />
                 )}
         </div>
