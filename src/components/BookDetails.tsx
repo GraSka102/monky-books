@@ -4,19 +4,17 @@ import Book from '../types/Book'
 
 import { bookApi, UseBookApi } from '../shared/BookApi';
 import { object } from 'superstruct';
+import { useParams } from 'react-router-dom';
 
-interface Props {
-    book: Book;
-    showList: () => void;
-}
-
-export default function BookDetails(props: Props) {
-    const { state } = (UseBookApi<Book>('get', `books/${props.book.isbn}`))
+export default function BookDetails() {
+    const { isbn } = useParams<{ isbn: string }>()
+    const { state, setState } = (UseBookApi<Book>('get', `books/${isbn}`))
     const book = state;
+    const setBook = setState;
 
     const onDeleteBook = () => {
         console.log("Lösche Buch")
-        bookApi('delete', `books/${props.book.isbn}`, props.showList);
+        bookApi('delete', `books/${isbn}`, setBook);
     }
 
     if (!book) {
@@ -70,7 +68,7 @@ export default function BookDetails(props: Props) {
                 </div>
             </div >
 
-            <button className="ui green button" onClick={props.showList}>Zurück zur Buchliste
+            <button className="ui green button" >Zurück zur Buchliste
                 </button>
             <button className="ui red button" onClick={onDeleteBook}>Buch entfernen
                 </button>

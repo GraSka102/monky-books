@@ -1,36 +1,35 @@
 import React, { ReactElement, useState } from 'react';
+import { BrowserRouter, NavLink, Route, Switch } from 'react-router-dom';
 import Book from '../types/Book';
 import BookDetails from './BookDetails';
 import BookList from './BookList';
-import axios from 'axios';
 
 type ViewState = 'list' | 'details'
 
 export default function App(): ReactElement {
 
-  const [viewState, setViewState] = useState<ViewState>('list');
-  const [book, setBook] = useState<Book>();
-
-
-  const showDetails = (book: Book) => {
-    setBook(book);
-    setViewState('details');
-    console.log("clicked im Child", book);
-  }
-
-  function showList() {
-    setViewState('list')
-    setBook(undefined)
-    console.log("showList() aufgerufen")
-  }
   return (
-    <div className="ui container">
-      { (book && viewState === 'details')
-        ?
-        <BookDetails book={book} showList={showList} />
-        :
-        <BookList showDetails={showDetails} showList={showList} />
-      }
-    </div>
+    <BrowserRouter>
+      <div className="ui menu">
+        <NavLink to='/books' className="item">
+          Bücher
+        </NavLink>
+        <NavLink to='/home' className="item">
+          Home
+        </NavLink>
+      </div>
+
+      <Switch>
+        <Route path="/books/:isbn">
+          <BookDetails />
+        </Route>
+        <Route path="/books">
+          <BookList />
+        </Route>
+        <Route path="/home">
+          <p>Home</p>
+        </Route>
+      </Switch>
+    </BrowserRouter>
   );
 }

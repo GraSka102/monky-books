@@ -1,15 +1,22 @@
 import React from 'react'
+import { Link, useHistory } from 'react-router-dom'
+import { bookApi } from '../shared/BookApi'
 import Book from '../types/Book'
 
 interface Props {
     book: Book,
-    showDetails: (book: Book) => void
+    //  showDetails: (book: Book) => void
 }
 
 export default function BookListItem(props: Props) {
+    const history = useHistory();
+
+    /*  const onClickItem = () => {
+         history.push(`/books/${props.book.isbn}`)
+     } */
 
     return (
-        <div onClick={() => { props.showDetails(props.book) }} className="item" >
+        <div onClick={() => history.push(`/books/${props.book.isbn}`)} className="item" >
             {props.book.thumbnails.map((thumbnail, index) =>
                 <img key={index} className="ui tiny image" alt={thumbnail.title} src={thumbnail.url} />
             )}

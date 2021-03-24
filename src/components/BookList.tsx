@@ -6,12 +6,12 @@ import BookListItem from './BookListItem'
 
 const baseUrl = 'https://api3.angular-buch.com';
 
-interface Props {
+/* interface Props {
     showDetails: (book: Book) => void
     showList: () => void
-}
+} */
 
-export default function BookList({ showDetails, showList }: Props) {
+export default function BookList() {
     const { state, setState } = (UseBookApi<Book[]>('get', 'books'))
     const books = state;
     const setBooks = setState;
@@ -42,7 +42,8 @@ export default function BookList({ showDetails, showList }: Props) {
         <div className="ui middle aligned selection divided list">
             {
                 books.map((book: Book) =>
-                    <BookListItem key={book.isbn} book={book} showDetails={showDetails} />
+                    <BookListItem key={book.isbn} book={book}
+                    />
                 )}
         </div>
     )
