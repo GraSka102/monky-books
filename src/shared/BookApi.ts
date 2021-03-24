@@ -1,13 +1,11 @@
 import axios, { AxiosResponse, Method } from 'axios';
 import { useEffect, useState } from 'react';
-import Book from '../types/Book';
 
 const baseUrl = 'https://api3.angular-buch.com';
-
+/*
 function isBooksArray(data: Book | Book[]): data is Book[] {
     return true;
 }
-/* 
 // Add a response interceptor
 axios.interceptors.response.use(function (response) {
     let data = response.data;

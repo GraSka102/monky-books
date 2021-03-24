@@ -4,16 +4,11 @@ import { bookApi } from '../shared/BookApi'
 import Book from '../types/Book'
 
 interface Props {
-    book: Book,
-    //  showDetails: (book: Book) => void
+    book: Book
 }
 
 export default function BookListItem(props: Props) {
     const history = useHistory();
-
-    /*  const onClickItem = () => {
-         history.push(`/books/${props.book.isbn}`)
-     } */
 
     return (
         <div onClick={() => history.push(`/books/${props.book.isbn}`)} className="item" >
@@ -35,6 +30,6 @@ export default function BookListItem(props: Props) {
                     {props.book.isbn}
                 </div>
             </div>
-        </div>
+        </div >
     )
 }

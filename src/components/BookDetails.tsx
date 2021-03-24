@@ -1,24 +1,25 @@
-import React, { useEffect, useState } from 'react'
-//import { books } from '../shared/books'
-import Book from '../types/Book'
-
+import React from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 import { bookApi, UseBookApi } from '../shared/BookApi';
-import { object } from 'superstruct';
-import { useParams } from 'react-router-dom';
+import Book from '../types/Book';
+import { LoadingSpinner } from './LoadingSpinner';
 
 export default function BookDetails() {
     const { isbn } = useParams<{ isbn: string }>()
-    const { state, setState } = (UseBookApi<Book>('get', `books/${isbn}`))
+    const history = useHistory()
+    const { state } = (UseBookApi<Book>('get', `books/${isbn}`))
     const book = state;
-    const setBook = setState;
 
     const onDeleteBook = () => {
-        console.log("Lösche Buch")
-        bookApi('delete', `books/${isbn}`, setBook);
+        bookApi('delete', `books/${isbn}`, onGoToList)
+    }
+
+    const onGoToList = () => {
+        history.push('/books');
     }
 
     if (!book) {
-        return <p>... is Loading</p>
+        return <LoadingSpinner />
     }
 
     const getRatings = (): number[] => {
@@ -68,8 +69,10 @@ export default function BookDetails() {
                 </div>
             </div >
 
-            <button className="ui green button" >Zurück zur Buchliste
+            <button className="ui green button" onClick={onGoToList}>Zurück zur Buchliste
                 </button>
+            {/*    <button className="ui green button"><Link to='/books'> Zurück zur Buchliste</Link>
+            </button> */}
             <button className="ui red button" onClick={onDeleteBook}>Buch entfernen
                 </button>
 

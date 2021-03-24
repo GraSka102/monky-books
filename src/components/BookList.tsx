@@ -1,15 +1,8 @@
-import axios, { AxiosError, AxiosResponse } from 'axios'
-import React, { useEffect, useState } from 'react'
+import React from 'react';
 import { bookApi, UseBookApi } from '../shared/BookApi';
-import Book from '../types/Book'
-import BookListItem from './BookListItem'
-
-const baseUrl = 'https://api3.angular-buch.com';
-
-/* interface Props {
-    showDetails: (book: Book) => void
-    showList: () => void
-} */
+import Book from '../types/Book';
+import BookListItem from './BookListItem';
+import { LoadingSpinner } from './LoadingSpinner';
 
 export default function BookList() {
     const { state, setState } = (UseBookApi<Book[]>('get', 'books'))
@@ -22,10 +15,8 @@ export default function BookList() {
     }
 
     if (!books) {
-        return (<div className="ui active inverted dimmer">
-            <div className="ui text loader large">Lade BookShelf ...</div>
-        </div>
-        )
+        return <LoadingSpinner />
+
     }
     if (books.length === 0) {
         return (
