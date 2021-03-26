@@ -23,12 +23,12 @@ axios.interceptors.response.use(function (response) {
     return Promise.reject(error);
 }); */
 
-export function bookApi<T>(method: Method, path: string, callback: (data: T) => void): void {
+export function bookApi<T>(method: Method, path: string, callback: (data: T) => void, data = {}): void {
     const url = `${baseUrl}/${path}`;
     axios({
         method: method,
         url: url,
-        data: {}
+        data
     })
         .then((response: AxiosResponse<T>) => callback(response.data))
         .catch((error) => console.log('Error', error.message))

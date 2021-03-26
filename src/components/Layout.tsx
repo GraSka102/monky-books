@@ -9,8 +9,9 @@ export default function Layout(props: any) {
     return (
         <>
             <div className="ui menu">
-                <NavLink to='/books' className="item">Bücher</NavLink>
+                <NavLink exact to='/books' className="item">Bücher</NavLink>
                 <NavLink to='/home' className="item">Home</NavLink>
+                <NavLink to='/books/create' className="item">Neues Buch</NavLink>
             </div>
 
             <div>{props.children}</div>
