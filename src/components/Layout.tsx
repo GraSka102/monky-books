@@ -11,7 +11,7 @@ export default function Layout(props: any) {
             <div className="ui menu">
                 <NavLink exact to='/books' className="item">Bücher</NavLink>
                 <NavLink to='/home' className="item">Home</NavLink>
-                <NavLink to='/books/create' className="item">Neues Buch</NavLink>
+                <NavLink to='/books/:isbn/create' className="item">Neues Buch</NavLink>
             </div>
 
             <div>{props.children}</div>

@@ -2,39 +2,35 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { bookApi } from '../shared/BookApi';
 import Book from '../types/Book';
-/* 
-isbn: string;
-title: string;
-authors: string[];
-published: Date;
-subtitle ?: string;
-rating ?: number;
-thumbnails: Thumbnail[];
-description ?: string; */
+import css from './App.module.css';
 
-//const buildThumbnail = [{ url: '', title: '' }]
+interface Prop {
+    book: Book
+    isEdit: boolean
+}
 
-export default function BookForm() {
+export default function BookForm({ book: newBook, isEdit }: Prop) {
     const history = useHistory()
 
     const buildThumbnail = () => {
         return { url: '', title: '' }
     }
-    const [isbn, setIsbn] = useState('')
-    const [title, setTitle] = useState('')
-    const [authors, setAuthors] = useState([''])
-    const [published, setPublished] = useState('')
-    const [subtitle, setSubtitle] = useState('')
+
+    const [isbn, setIsbn] = useState(newBook.isbn)
+    const [title, setTitle] = useState(newBook.title)
+    const [authors, setAuthors] = useState(newBook.authors)
+    const [published, setPublished] = useState(newBook.published)
+    const [subtitle, setSubtitle] = useState(newBook.subtitle)
     // const [rating, setRating] = useState('')
-    const [thumbnails, setThumbnails] = useState([buildThumbnail()])
-    const [description, setDescription] = useState('')
+    const [thumbnails, setThumbnails] = useState(newBook.thumbnails)
+    const [description, setDescription] = useState(newBook.description)
 
     const book = (): any => {
         return {
             isbn,
             title,
             authors,
-            published: new Date(published).toString,
+            published,
             subtitle,
             thumbnails,
             description
@@ -86,27 +82,32 @@ export default function BookForm() {
         })
     }
 
-    //   const onSubmit = (e: SyntheticEvent>) => { - kann man nicht auf target zugreifen.
+    //   const onSubmit = (e: SyntheticEvent>) =>  kann man nicht auf target zugreifen.
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log("My Submit ")
-        bookApi('post', 'book', (() => history.push('/books')), book())
 
+        isEdit
+            ? bookApi('put', `book/${isbn}`, (() => history.push(`book/${isbn}`)), book())
+            : bookApi('post', 'book', (() => history.push('/books')), book())
     }
 
     return (
-        <form className="ui form" onSubmit={onSubmit}>
+        <form className={`${css.bookForm} ui form`} onSubmit={onSubmit} >
             <label>Buchtitel</label>
-            <input placeholder="Titel" onChange={(e) => setTitle(e.target.value)} value={title} />
+            <input required placeholder="Titel" onChange={(e) => setTitle(e.target.value)} value={title} />
 
             <label>Untertitel</label>
             <input placeholder="Subtitle" onChange={(e) => setSubtitle(e.target.value)} value={subtitle} />
 
             <label>Isbn</label>
-            <input placeholder="Isbn" onChange={(e) => setIsbn(e.target.value)} value={isbn} />
+            <input required readOnly={isEdit} pattern="\d{9}|\d{11}" placeholder="Isbn" onChange={(e) => setIsbn(e.target.value)} value={isbn} />
+            {/*    <p>{`newBook: ${newBook.published}`}</p>
+            <p>{`published: ${published}`}</p>
+            <p>{`published: ${new Date(published).toISOString()}`}</p>
+            <p>{`toString: ${published.toString()}`}</p> */}
 
             <label>Erscheinungsdatum</label>
-            <input placeholder="Published" type="date" onChange={(e) => setPublished(e.target.value)} value={published} />
+            <input required placeholder="Published" type="date" onChange={(e) => setPublished(new Date(e.target.value))} value={new Date(published).toISOString().substring(0, 10)} />
 
             <label>Authoren</label>
             <button onClick={onAddAuthor} className="ui mini button" type="button">+</button>
@@ -114,7 +115,7 @@ export default function BookForm() {
             <div className="fields">
                 {authors.map((author, index) =>
                     <div key={index} className="sixteen wide field">
-                        <input placeholder="author" onChange={(e) => onChangeAuthors(index, e.target.value)} value={author} />
+                        <input required placeholder="author" onChange={(e) => onChangeAuthors(index, e.target.value)} value={author} />
                     </div>
                 )}
             </div>
@@ -125,12 +126,13 @@ export default function BookForm() {
             <button onClick={onAddThumbnails} className="ui mini button" type="button">+</button>
             <button onClick={onDeleteThumbnails} className="ui mini button" type="button">-</button>
 
-            {thumbnails.map((thumbnail, index) =>
-                <div key={index} className="field">
-                    <input placeholder="Url" className="nine wide field" onChange={(e) => onChangeThumbnails(index, "url", e.target.value)} value={thumbnail.url} />
-                    <input placeholder="Titel" className="seven wide field" onChange={(e) => onChangeThumbnails(index, "title", e.target.value)} value={thumbnail.title} />
-                </div>
-            )
+            {
+                thumbnails.map((thumbnail, index) =>
+                    <div key={index} className="field">
+                        <input required type="url" placeholder="Url" className="nine wide field" onChange={(e) => onChangeThumbnails(index, "url", e.target.value)} value={thumbnail.url} />
+                        <input placeholder="Titel" className="seven wide field" onChange={(e) => onChangeThumbnails(index, "title", e.target.value)} value={thumbnail.title} />
+                    </div>
+                )
             }
             <button className="ui button">Submit</button>
         </form >

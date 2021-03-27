@@ -24,7 +24,7 @@ export default function BookListItem(props: Props) {
                 </div>
                 <div className="metadata">
                     {props.book.authors.map((autor, index) =>
-                        <span className="item" role="item" key={index}>{autor}</span>
+                        <span className="item" role="item" key={index}>{autor}<br /></span>
                     )}
                     <br />
                     {props.book.isbn}

@@ -73,9 +73,10 @@ export default function BookDetails() {
                 </button>
             {/*    <button className="ui green button"><Link to='/books'> Zurück zur Buchliste</Link>
             </button> */}
-            <button className="ui red button" onClick={onDeleteBook}>Buch entfernen
+            <button className="ui red button" onClick={onDeleteBook}>Löschen
                 </button>
-
+            <button className="ui red button" onClick={() => history.push(`${isbn}/edit`)}>Bearbeiten
+                </button>
         </>
     )
 }
