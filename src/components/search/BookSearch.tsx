@@ -9,8 +9,7 @@ export function BookSearch() {
     const [foundBooks, setFoundBooks] = useState<Book[]>()
     const [isPopupOpen, setPopupOpen] = useState(false)
 
-    const { state } = (UseBookApi<Book[]>('get', 'books'))
-    const books = state
+    const [books] = (UseBookApi<Book[]>('get', 'books'))
 
     const onInput = (e: any) => {
         (e.target.value !== "") ? setPopupOpen(true) : setPopupOpen(false)

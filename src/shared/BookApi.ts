@@ -35,7 +35,7 @@ export function bookApi<T>(method: Method, path: string, callback: (data: T) => 
         .then(() => console.log("Request succeeded"))
 }
 
-export function UseBookApi<T>(method: Method, path: string): ({ state: (T | undefined), setState: React.Dispatch<React.SetStateAction<T | undefined>> }) {
+export function UseBookApi<T>(method: Method, path: string): ([state: (T | undefined), setState: React.Dispatch<React.SetStateAction<T | undefined>>]) {
     const [state, setState] = useState<T>()
 
     useEffect(() => {
@@ -45,6 +45,5 @@ export function UseBookApi<T>(method: Method, path: string): ({ state: (T | unde
             // cleanup
         }
     }, [method, path])
-    return { state, setState };
+    return [state, setState];
 }
-

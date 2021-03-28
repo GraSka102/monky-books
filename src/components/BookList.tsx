@@ -5,9 +5,8 @@ import BookListItem from './BookListItem';
 import { LoadingSpinner } from './LoadingSpinner';
 
 export default function BookList() {
-    const { state, setState } = (UseBookApi<Book[]>('get', 'books'))
-    const books = state;
-    const setBooks = setState;
+
+    const [books, setBooks] = (UseBookApi<Book[]>('get', 'books'))
 
     function restoreBooks() {
         //callback in callback

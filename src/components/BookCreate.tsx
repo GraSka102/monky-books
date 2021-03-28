@@ -8,7 +8,7 @@ export default function BookCreate() {
         isbn: '37891294451',
         title: 'Pippi Langstrumpf Gesamtausgabe ',
         authors: [' Astrid Lindgren', 'Max Musterman'],
-        published: new Date("01-02-1987"),
+        published: new Date("01/02/1987"),
         subtitle: 'Gesamtausgabe',
         thumbnails: [{
             url: 'https://media2.hugendubel.de/shop/coverscans/137/1375948_2147335_xl.jpg', title: 'Pipi'

@@ -8,11 +8,8 @@ import { LoadingSpinner } from './LoadingSpinner'
 export default function BookEdit() {
 
     const { isbn } = useParams<{ isbn: string }>();
-    const { state } = UseBookApi<Book>('get', `books/${isbn}`)
-    const book = state
-    if (!state) {
-        <LoadingSpinner />
-    }
+    const [book] = UseBookApi<Book>('get', `books/${isbn}`)
+
     return (
         <>
             {!book

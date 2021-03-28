@@ -7,8 +7,7 @@ import { LoadingSpinner } from './LoadingSpinner';
 export default function BookDetails() {
     const { isbn } = useParams<{ isbn: string }>()
     const history = useHistory()
-    const { state } = (UseBookApi<Book>('get', `books/${isbn}`))
-    const book = state;
+    const [book] = (UseBookApi<Book>('get', `books/${isbn}`))
 
     const onDeleteBook = () => {
         bookApi('delete', `books/${isbn}`, onGoToList)
