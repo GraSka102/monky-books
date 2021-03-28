@@ -5,6 +5,7 @@ import BookDetails from './BookDetails'
 import BookEdit from './BookEdit'
 import BookList from './BookList'
 import Home from './Home'
+import { BookSearch } from './search/BookSearch'
 
 export default function Routing() {
     return (
@@ -14,6 +15,9 @@ export default function Routing() {
             </Route>
             <Route path="/books/:isbn/edit">
                 <BookEdit />
+            </Route>
+            <Route path="/books/search">
+                <BookSearch />
             </Route>
             <Route path="/books/:isbn">
                 <BookDetails />

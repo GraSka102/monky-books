@@ -101,10 +101,6 @@ export default function BookForm({ book: newBook, isEdit }: Prop) {
 
             <label>Isbn</label>
             <input required readOnly={isEdit} pattern="\d{9}|\d{11}" placeholder="Isbn" onChange={(e) => setIsbn(e.target.value)} value={isbn} />
-            {/*    <p>{`newBook: ${newBook.published}`}</p>
-            <p>{`published: ${published}`}</p>
-            <p>{`published: ${new Date(published).toISOString()}`}</p>
-            <p>{`toString: ${published.toString()}`}</p> */}
 
             <label>Erscheinungsdatum</label>
             <input required placeholder="Published" type="date" onChange={(e) => setPublished(new Date(e.target.value))} value={new Date(published).toISOString().substring(0, 10)} />

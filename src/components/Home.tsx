@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { BookSearch } from './BookSearch'
+import { BookSearch } from './search/BookSearch'
 
 export default function Home() {
     return (
@@ -10,7 +10,6 @@ export default function Home() {
             <br />
             <br />
             <BookSearch />
-
         </div>
     )
 }
