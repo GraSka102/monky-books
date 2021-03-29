@@ -75,7 +75,7 @@ export default function BookForm({ book: newBook, isEdit }: Prop) {
     const onDeleteThumbnails = () => {
         setThumbnails(currentThumbnails => {
             const copyThumbnails = [...currentThumbnails]
-            if (currentThumbnails.length > 1) {
+            if (currentThumbnails.length > 0) {
                 copyThumbnails.pop()
             }
             return copyThumbnails
