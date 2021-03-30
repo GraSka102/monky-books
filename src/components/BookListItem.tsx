@@ -1,10 +1,11 @@
-import React from 'react'
-import { Link, useHistory } from 'react-router-dom'
-import { bookApi } from '../shared/BookApi'
-import Book from '../types/Book'
+import React, { ReactElement } from 'react';
+import { useHistory } from 'react-router-dom';
+import Book from '../types/Book';
 
 interface Props {
+    children?: ReactElement
     book: Book
+    countInCart?: number
 }
 
 export default function BookListItem(props: Props) {
@@ -30,6 +31,7 @@ export default function BookListItem(props: Props) {
                     {props.book.isbn}
                 </div>
             </div>
+            {props.children}
         </div >
     )
 }

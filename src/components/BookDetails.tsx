@@ -1,10 +1,16 @@
 import React from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { bookApi, UseBookApi } from '../shared/BookApi';
+import { Actions } from '../Store';
 import Book from '../types/Book';
 import { LoadingSpinner } from './LoadingSpinner';
 
-export default function BookDetails() {
+interface Props {
+    dispatch: React.Dispatch<Actions>
+    shopingCart: Book[]
+}
+
+export default function BookDetails({ dispatch, shopingCart }: Props) {
     const { isbn } = useParams<{ isbn: string }>()
     const history = useHistory()
     const [book] = (UseBookApi<Book>('get', `books/${isbn}`))
@@ -28,6 +34,16 @@ export default function BookDetails() {
             ratingArray.push(i)
         }
         return ratingArray
+    }
+
+    const onAddToCart = () => {
+        dispatch({ type: 'ADD_TO_CART', book })
+        // history.push('/cart')
+    }
+
+    function countInCart(): number {
+        const inCart = shopingCart.filter((sc) => sc.isbn === book!.isbn)
+        return inCart.length;
     }
 
     return (
@@ -70,11 +86,11 @@ export default function BookDetails() {
 
             <button className="ui green button" onClick={onGoToList}>Zurück zur Buchliste
                 </button>
-            {/*    <button className="ui green button"><Link to='/books'> Zurück zur Buchliste</Link>
-            </button> */}
             <button className="ui red button" onClick={onDeleteBook}>Löschen
                 </button>
-            <button className="ui red button" onClick={() => history.push(`${isbn}/edit`)}>Bearbeiten
+            <button className="ui yellow button" onClick={() => history.push(`${isbn}/edit`)}>Bearbeiten
+                </button>
+            <button className="ui green button" onClick={() => onAddToCart()}>Zum Warenkorb hinzufügen
                 </button>
         </>
     )

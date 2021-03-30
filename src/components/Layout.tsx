@@ -13,8 +13,8 @@ export default function Layout(props: any) {
                 <NavLink exact to='/books' className="item">Bücher</NavLink>
                 <NavLink to='/home' className="item">Home</NavLink>
                 <NavLink to='/books/:isbn/create' className="item">Neues Buch</NavLink>
+                <NavLink exact to='/cart' className="item">Warenkorb</NavLink>
                 <NavLink to='/books/search' className="item right"><BookSearch /></NavLink>
-
             </div>
 
             <div>{props.children}</div>
