@@ -1,35 +1,34 @@
-import React from 'react';
+import React, { SyntheticEvent } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Actions } from '../Store';
+import { useStore } from '../Store';
 import Book from '../types/Book';
 import BookListItem from './BookListItem';
 
-interface Props {
-    dispatch: React.Dispatch<Actions>
-    shopingCart: Book[]
-}
-export default function Cart({ dispatch, shopingCart }: Props) {
+export default function Cart() {
     const history = useHistory()
+    const ctx = useStore()
 
-    const uniqueBooks = shopingCart.reduce((acc: Book[], book) => {
+    const uniqueBooks = ctx.store.shopingCart.reduce((acc: Book[], book) => {
         acc.find(book_ => book_.isbn === book.isbn) || acc.push(book)
         return acc
     }, [])
         .sort((bookA, bookB) => Number(bookA.isbn) - Number(bookB.isbn))
 
-    const onAddOne = (book: Book) => {
-        dispatch({ type: 'ADD_TO_CART', book })
+    const onAddOne = (e: SyntheticEvent, book: Book) => {
+        e.stopPropagation()
+        ctx.dispatch({ type: 'ADD_TO_CART', book })
         countInCart(book)
         history.push('/cart')
     }
 
-    const onRemoveOne = (book: Book) => {
-        dispatch({ type: 'REMOVE_FROM_CART', book })
+    const onRemoveOne = (e: SyntheticEvent, book: Book) => {
+        e.stopPropagation()
+        ctx.dispatch({ type: 'REMOVE_FROM_CART', book })
         history.push('/cart')
     }
 
     const countInCart = (book: Book): number => {
-        const inCart = shopingCart.filter((sc) => sc.isbn === book!.isbn)
+        const inCart = ctx.store.shopingCart.filter((sc) => sc.isbn === book!.isbn)
         console.log("In Cart" + inCart.length)
         return inCart.length;
     }
@@ -43,8 +42,8 @@ export default function Cart({ dispatch, shopingCart }: Props) {
                             <div className="right floated content">
                                 <div className="ui label">
                                     <i className="shopping cart icon" />{countInCart(book)}</div>
-                                <button className="ui button" onClick={() => onAddOne(book)}>Add One</button>
-                                <button className="ui button" onClick={() => onRemoveOne(book)}>Remove One</button>
+                                <button className="ui button" onClick={(e) => onAddOne(e, book)}>Add One</button>
+                                <button className="ui button" onClick={(e) => onRemoveOne(e, book)}>Remove One</button>
                             </div>
                         </BookListItem>
                     </div>

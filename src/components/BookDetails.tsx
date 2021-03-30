@@ -1,19 +1,17 @@
 import React from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { bookApi, UseBookApi } from '../shared/BookApi';
-import { Actions } from '../Store';
+import { Actions, useStore } from '../Store';
 import Book from '../types/Book';
 import { LoadingSpinner } from './LoadingSpinner';
 
-interface Props {
-    dispatch: React.Dispatch<Actions>
-    shopingCart: Book[]
-}
-
-export default function BookDetails({ dispatch, shopingCart }: Props) {
+export default function BookDetails() {
     const { isbn } = useParams<{ isbn: string }>()
     const history = useHistory()
     const [book] = (UseBookApi<Book>('get', `books/${isbn}`))
+    const ctx = useStore()
+    ctx.store.shopingCart
+    ctx.dispatch
 
     const onDeleteBook = () => {
         bookApi('delete', `books/${isbn}`, onGoToList)
@@ -37,12 +35,11 @@ export default function BookDetails({ dispatch, shopingCart }: Props) {
     }
 
     const onAddToCart = () => {
-        dispatch({ type: 'ADD_TO_CART', book })
-        // history.push('/cart')
+        ctx.dispatch({ type: 'ADD_TO_CART', book })
     }
 
     function countInCart(): number {
-        const inCart = shopingCart.filter((sc) => sc.isbn === book!.isbn)
+        const inCart = ctx.store.shopingCart.filter((sc) => sc.isbn === book!.isbn)
         return inCart.length;
     }
 

@@ -9,7 +9,6 @@ export default function BookList() {
     const [books, setBooks] = (UseBookApi<Book[]>('get', 'books'))
 
     function restoreBooks() {
-        //callback in callback
         bookApi<string>('delete', `books`, () => bookApi<Book[]>('get', `books`, setBooks));
     }
 

@@ -23,10 +23,10 @@ export default function Routing() {
                 <BookSearch />
             </Route>
             <Route path="/books/:isbn">
-                <BookDetails dispatch={dispatch} shopingCart={store.shopingCart} />
+                <BookDetails />
             </Route>
             <Route path="/cart">
-                <Cart dispatch={dispatch} shopingCart={store.shopingCart} />
+                <Cart />
             </Route>
             <Route path="/books">
                 <BookList />
